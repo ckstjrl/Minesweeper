@@ -51,10 +51,10 @@ MVVM 패턴을 준수하여 제작된 윈도우 지뢰찾기 아이디어를 기
 <br>
 
 #### 🛠️ 기술 스택 (Tech Stack)
-- Language : C# (.NET)
-- Framework: WPF
-- Pattern: MVVM (Model-View-ViewModel)
-- Storage: JSON (System.Text.Json)
+- **Language** : C# (.NET)
+- **Framework** : WPF
+- **Pattern** : MVVM (Model-View-ViewModel)
+- **Storage** : JSON (System.Text.Json)
 <br>
 
 #### 📂 프로젝트 구조
