@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace MinesweeperProject.Views
+namespace MinesweeperProject.View
 {
     public partial class SettingView : UserControl
     {
