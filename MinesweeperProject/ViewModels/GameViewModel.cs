@@ -56,7 +56,7 @@ namespace MinesweeperProject.ViewModels
             SetupTimer();
         }
 
-        public GameViewModel(SaveData saveData, MainViewModel mainParent) // 저장된 게임 복원 생성자
+        public GameViewModel(SaveData saveData, MainViewModel mainParent)
         {
             _mainParent = mainParent;
             this.DifficultyName = saveData.DifficultyName;
@@ -65,7 +65,7 @@ namespace MinesweeperProject.ViewModels
             this.MineCount = saveData.MineCount;
 
             Cells.Clear();
-            foreach (var state in saveData.Cells) // 셀 정보 불러오기
+            foreach (var state in saveData.Cells)
             {
                 var cell = new Cell(state.Row, state.Col)
                 {
@@ -76,6 +76,8 @@ namespace MinesweeperProject.ViewModels
                 };
                 Cells.Add(cell);
             }
+
+            _isFirstClick = !Cells.Any(c => c.IsOpened);
 
             OpenCellCommand = new RelayCommand(o => OpenCell(o as Cell));
             FlagCellCommand = new RelayCommand(o => FlagCell(o as Cell));
@@ -90,7 +92,16 @@ namespace MinesweeperProject.ViewModels
 
             this.CurrentTime = saveData.CurrentTime;
             SetupTimer();
+
+            if (!_isFirstClick)
+            {
+                _timer.Start();
+                _isTimerRunning = true;
+            }
+
             OnPropertyChanged(nameof(TimeDisplay));
+            OnPropertyChanged(nameof(Rows));
+            OnPropertyChanged(nameof(Cols));
         }
 
         private void SetDifficulty(string difficulty) // 난이도 설정 함수
@@ -131,6 +142,7 @@ namespace MinesweeperProject.ViewModels
 
         private void PlaceMines(Cell firstCell) // 첫 클릭 후, 지뢰 배치 함수
         {
+            if (Cells.Any(c => c.IsMine)) return;
             Random rand = new Random();
 
             var safeZone = GetNeighbors(firstCell).ToList();
