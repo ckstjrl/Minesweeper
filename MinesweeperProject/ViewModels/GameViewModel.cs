@@ -210,11 +210,13 @@ namespace MinesweeperProject.ViewModels
         {
             if (isWin)
             {
+                AudioService.Instance.PlaySFX("Win.mp3");
                 _mainParent.UpdateRanking(this.DifficultyName, this.CurrentTime);
                 MessageBox.Show($"축하합니다! {TimeDisplay} 만에 클리어하여 랭킹에 등록되었습니다!");
             }
             else
             {
+                AudioService.Instance.PlaySFX("Bomb.mp3");
                 MessageBox.Show("지뢰를 밟았습니다!");
             }
             _mainParent.ShowMainMenuView(_mainParent.Nickname!);
