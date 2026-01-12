@@ -4,88 +4,149 @@
              Background="White">
 
     <UserControl.Resources>
-        <Style x:Key="ModernNavigationButtonStyle" TargetType="Button">
+        <Style x:Key="BaseRankingButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="18">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-        <Style x:Key="ResetButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernNavigationButtonStyle}">
+
+        <Style x:Key="ModernNavigationButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseRankingButtonStyle}">
+            <Setter Property="Background" Value="#002C77"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#EBF2FF"/>
+                    <Setter Property="BorderBrush" Value="#002C77"/>
+                    <Setter Property="Foreground" Value="#002C77"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ResetButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseRankingButtonStyle}">
+            <Setter Property="Background" Value="#FEEBEE"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="BorderBrush" Value="#FFCDD2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFCDD2"/>
+                    <Setter Property="BorderBrush" Value="#D32F2F"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </UserControl.Resources>
 
     <DockPanel LastChildFill="True">
-        <TextBlock DockPanel.Dock="Top" Text="🏆 명예의 전당" FontSize="32" FontWeight="Bold" 
-                   HorizontalAlignment="Center" Margin="0,30,0,20" Foreground="#333"/>
+        <StackPanel DockPanel.Dock="Top" Margin="30,25,0,20">
+            <TextBlock Text="LIGNex1" Foreground="#002C77" FontWeight="Bold" FontSize="13" Margin="0,0,0,2"/>
+            <TextBlock Text="명예의 전당" Foreground="#1A1A1A" FontWeight="ExtraBold" FontSize="34"/>
+        </StackPanel>
 
         <Border DockPanel.Dock="Bottom" Padding="0,20,0,40">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="랭킹 초기화" Command="{Binding ResetRankingsCommand}" Style="{StaticResource ResetButtonStyle}" MinWidth="120" Margin="0,0,10,0"/>
-                <Button Content="나가기" Command="{Binding ReturnToMenuCommand}" Style="{StaticResource ModernNavigationButtonStyle}" MinWidth="120"/>
+                <Button Content="랭킹 초기화" Command="{Binding ResetRankingsCommand}" Style="{StaticResource ResetButtonStyle}" MinWidth="130" Height="45" Margin="0,0,15,0"/>
+                <Button Content="나가기" Command="{Binding ReturnToMenuCommand}" Style="{StaticResource ModernNavigationButtonStyle}" MinWidth="130" Height="45"/>
             </StackPanel>
         </Border>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20,0">
-            <ItemsControl ItemsSource="{Binding Rankings}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="10">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Background" Value="White"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Rank}" Value="1">
-                                            <Setter Property="Background" Value="#FFF9C4"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Rank}" Value="2">
-                                            <Setter Property="Background" Value="#F5F5F5"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Rank}" Value="3">
-                                            <Setter Property="Background" Value="#FFECB3"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
+        <Grid Margin="25,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Rankings}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Padding="15,12" Margin="0,0,0,5" CornerRadius="8">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Rank}" Value="1">
+                                                <Setter Property="Background" Value="#FFFDE7"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Rank}" Value="2">
+                                                <Setter Property="Background" Value="#F8F9FA"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Rank}" Value="3">
+                                                <Setter Property="Background" Value="#FFF3E0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="5*"/>
+                                        <ColumnDefinition Width="80"/>
+                                        <ColumnDefinition Width="90"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="80"/>
-                                    <ColumnDefinition Width="80"/>
-                                </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{Binding Rank}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Rank}" Value="1">
+                                                        <Setter Property="Text" Value="🥇"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Rank}" Value="2">
+                                                        <Setter Property="Text" Value="🥈"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Rank}" Value="3">
+                                                        <Setter Property="Text" Value="🥉"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
 
-                                <TextBlock Grid.Column="0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="{Binding Rank}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Rank}" Value="1">
-                                                    <Setter Property="Text" Value="🥇"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Rank}" Value="2">
-                                                    <Setter Property="Text" Value="🥈"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Rank}" Value="3">
-                                                    <Setter Property="Text" Value="🥉"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                                    <TextBlock Grid.Column="1" Text="{Binding Nickname}" FontSize="14" VerticalAlignment="Center" FontWeight="Bold" Foreground="#1A1A1A" Margin="15,0" HorizontalAlignment="Left"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Difficulty}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#888"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding TimeDisplay}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="ExtraBold" Foreground="#002C77" Margin="0,0,10,0"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
 
-                                <TextBlock Grid.Column="1" 
-                                           Text="{Binding Nickname}" 
-                                           FontSize="16" 
-                                           VerticalAlignment="Center" 
-                                           FontWeight="SemiBold"
-                                           Margin="15,0"
-                                           TextTrimming="CharacterEllipsis"/>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Rankings.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
 
-                                <TextBlock Grid.Column="2" Text="{Binding Difficulty}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#777"/>
-
-                                <TextBlock Grid.Column="3" Text="{Binding TimeDisplay}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="Bold" Foreground="#007ACC" Margin="0,0,10,0"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                <TextBlock Text="📭" FontSize="60" HorizontalAlignment="Center" Margin="0,0,0,15" Opacity="0.5"/>
+                <TextBlock Text="등록된 랭킹 정보가 없습니다." FontSize="18" Foreground="#AAAAAA" FontWeight="Medium" HorizontalAlignment="Center"/>
+                <TextBlock Text="첫 번째 명예의 주인공이 되어보세요!" FontSize="14" Foreground="#CCCCCC" Margin="0,5,0,0" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
     </DockPanel>
 </UserControl>
