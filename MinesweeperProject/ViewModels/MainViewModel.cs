@@ -43,33 +43,31 @@ namespace MinesweeperProject.ViewModels
             ShowLoginView();
         }
 
-        public void ShowLoginView()
+        public void ShowLoginView() // 로그인화면 불러오기
         {
-            WindowSizeToContent = SizeToContent.Manual; // 고정 크기 모드
+            WindowSizeToContent = SizeToContent.Manual;
             WindowWidth = 400;
             WindowHeight = 500;
             CurrentViewModel = new LoginViewModel(this);
         }
 
-        public void ShowMainMenuView(string nickname)
+        public void ShowMainMenuView(string nickname) //메인 메뉴 화면 불러오기
         {
             this.Nickname = nickname;
-            WindowSizeToContent = SizeToContent.Manual; // 고정 크기 모드
+            WindowSizeToContent = SizeToContent.Manual;
             WindowWidth = 500;
             WindowHeight = 600;
             CurrentViewModel = new MainMenuViewModel(this);
         }
 
-        // 4. 게임 화면으로 전환하는 메서드를 추가합니다.
-        public void ShowGameView(string difficulty)
+        public void ShowGameView(string difficulty) // 새 게임 시작
         {
-            // 우선 전환이 잘 되는지 확인하기 위해 메시지 박스를 띄웁니다.
             System.Windows.MessageBox.Show($"{difficulty} 난이도로 게임을 시작합니다!");
             WindowSizeToContent = SizeToContent.WidthAndHeight;
             CurrentViewModel = new GameViewModel(difficulty, this);
         }
 
-        public void RestoreGame(SaveData data)
+        public void RestoreGame(SaveData data) // 게임 불러오기
         {
 
             WindowSizeToContent = System.Windows.SizeToContent.WidthAndHeight;
@@ -78,31 +76,56 @@ namespace MinesweeperProject.ViewModels
             CurrentViewModel = gameVM;
         }
 
-        public void UpdateRanking(string difficulty, int time)
+        public void UpdateRanking(string difficulty, int time) // 랭킹 업데이트 (파일 불러오기)
         {
             RankingData data;
+
             if (File.Exists(RankingFileName))
             {
-                string json = File.ReadAllText(RankingFileName);
-                data = JsonSerializer.Deserialize<RankingData>(json) ?? new RankingData();
+                try
+                {
+                    string json = File.ReadAllText(RankingFileName);
+                    data = JsonSerializer.Deserialize<RankingData>(json) ?? new RankingData();
+                }
+                catch
+                {
+                    data = new RankingData();
+                }
             }
             else
             {
                 data = new RankingData();
             }
 
-            var entry = new RankingEntry { Nickname = this.Nickname!, Time = time, Date = DateTime.Now };
-            data.DifficultyRankings[difficulty].Add(entry);
+            if (data.DifficultyRankings == null)
+            {
+                data.DifficultyRankings = new Dictionary<string, List<RankingEntry>>();
+            }
 
+            if (!data.DifficultyRankings.ContainsKey(difficulty))
+            {
+                data.DifficultyRankings[difficulty] = new List<RankingEntry>();
+            }
+
+            var entry = new RankingEntry
+            {
+                Nickname = string.IsNullOrEmpty(this.Nickname) ? "Guest" : this.Nickname,
+                Time = time,
+                Difficulty = difficulty
+            };
+
+            data.DifficultyRankings[difficulty].Add(entry);
             data.DifficultyRankings[difficulty] = data.DifficultyRankings[difficulty]
                 .OrderBy(x => x.Time)
                 .Take(3)
                 .ToList();
 
-            File.WriteAllText(RankingFileName, JsonSerializer.Serialize(data));
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string serializedData = JsonSerializer.Serialize(data, options);
+            File.WriteAllText(RankingFileName, serializedData);
         }
 
-        public void ShowRankingView()
+        public void ShowRankingView() // 랭킹 화면 불러오기
         {
             WindowSizeToContent = System.Windows.SizeToContent.Manual;
             WindowWidth = 400;
