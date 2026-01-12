@@ -21,6 +21,11 @@
             <DataTemplate DataType="{x:Type vm:RankingViewModel}">
                 <view:RankingView />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:SettingViewModel}">
+                <view:SettingView />
+            </DataTemplate>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>
