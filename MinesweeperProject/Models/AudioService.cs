@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Media;
 using System.Windows.Media;
 
 namespace MinesweeperProject.Models
@@ -28,14 +29,29 @@ namespace MinesweeperProject.Models
         public void SetBgmMute(bool isMuted) => _bgmPlayer.IsMuted = isMuted;
         public void SetSfxMute(bool isMuted) => _sfxPlayer.IsMuted = isMuted;
 
-        // 효과음 재생 (지뢰 클릭 등에서 호출용)
         public void PlaySFX(string fileName)
         {
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "SFX", fileName);
+            // 1. 파일 확장자가 .wav인지 확인 (SoundPlayer는 mp3 지원 안함)
+            string wavFileName = Path.ChangeExtension(fileName, ".wav");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "SFX", wavFileName);
+
             if (File.Exists(path))
             {
-                _sfxPlayer.Open(new Uri(path));
-                _sfxPlayer.Play();
+                try
+                {
+                    using (SoundPlayer player = new SoundPlayer(path))
+                    {
+                        player.Play();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SFX 재생 오류: {ex.Message}");
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"파일 없음: {path}");
             }
         }
     }
