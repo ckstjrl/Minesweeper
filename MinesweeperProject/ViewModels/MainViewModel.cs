@@ -44,6 +44,7 @@ namespace MinesweeperProject.ViewModels
         {
             ShowSettingCommand = new RelayCommand(o => ShowSettingView());
             ShowLoginView();
+            AudioService.Instance.PlayBGM("Drum_Or_Bass.mp3");
         }
 
         public void ShowLoginView() // 로그인화면 불러오기

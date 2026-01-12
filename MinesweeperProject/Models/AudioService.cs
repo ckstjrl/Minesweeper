@@ -6,6 +6,7 @@ namespace MinesweeperProject.Models
 {
     public class AudioService
     {
+        public static AudioService Instance { get; } = new AudioService();
         private MediaPlayer _bgmPlayer = new MediaPlayer();
         private MediaPlayer _sfxPlayer = new MediaPlayer();
 

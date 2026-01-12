@@ -10,13 +10,15 @@ namespace MinesweeperProject.ViewModels
     public class SettingViewModel : ViewModelBase
     {
         private readonly MainViewModel _mainParent;
-        private readonly AudioService _audioService = new AudioService();
+        private readonly AudioService _audioService = AudioService.Instance;
 
         public ObservableCollection<MusicItem> BgmList { get; } = new ObservableCollection<MusicItem>
         {
-            new MusicItem("기본 테마", "theme1.mp3"),
-            new MusicItem("긴장감 넘치는 곡", "tension.mp3"),
-            new MusicItem("평화로운 곡", "peaceful.mp3")
+            new MusicItem("Drum_Or_Bass", "Drum_Or_Bass.mp3"),
+            new MusicItem("Brave", "Brave.mp3"),
+            new MusicItem("Numb_Sky", "Numb_Sky.mp3"),
+            new MusicItem("On_The_Eve", "On_The_Eve.mp3"),
+            new MusicItem("Scale_The_Well", "Scale_The_Well.mp3")
         };
 
         // 돌아가기 커맨드 추가
