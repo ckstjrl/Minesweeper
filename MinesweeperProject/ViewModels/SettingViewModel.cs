@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using MinesweeperProject.Models;
+using MinesweeperProject.Services; // RelayCommand 위치 확인
 
 namespace MinesweeperProject.ViewModels
 {
-    public class SettingViewModel : INotifyPropertyChanged
+    // 1. ViewModelBase 상속으로 변경 (SetProperty 사용 가능)
+    public class SettingViewModel : ViewModelBase
     {
+        private readonly MainViewModel _mainParent;
         private readonly AudioService _audioService = new AudioService();
 
         public ObservableCollection<MusicItem> BgmList { get; } = new ObservableCollection<MusicItem>
@@ -17,58 +19,75 @@ namespace MinesweeperProject.ViewModels
             new MusicItem("평화로운 곡", "peaceful.mp3")
         };
 
-        // 1. 전체 소리 On/Off
+        // 돌아가기 커맨드 추가
+        public ICommand ReturnToMenuCommand { get; }
+
+        // 2. 생성자에서 MainViewModel을 받도록 수정
+        public SettingViewModel(MainViewModel mainParent)
+        {
+            _mainParent = mainParent;
+
+            // 메인 메뉴로 돌아가는 커맨드 연결
+            ReturnToMenuCommand = new RelayCommand(o =>
+            {
+                // MainViewModel에 정의된 ShowMainMenuView 호출
+                _mainParent.ShowMainMenuView(_mainParent.Nickname ?? "Guest");
+            });
+
+            // 초기 값 설정 (예시)
+            _selectedBgm = BgmList[0];
+        }
+
+        #region 오디오 설정 프로퍼티 (기존 로직 유지하되 SetProperty 적용)
+
         private bool _isMasterSoundOn = true;
         public bool IsMasterSoundOn
         {
             get => _isMasterSoundOn;
             set
             {
-                _isMasterSoundOn = value;
-                _audioService.SetBgmMute(!value);
-                _audioService.SetSfxMute(!value);
-                OnPropertyChanged();
+                if (SetProperty(ref _isMasterSoundOn, value))
+                {
+                    _audioService.SetBgmMute(!value);
+                    _audioService.SetSfxMute(!value);
+                }
             }
         }
 
-        // 2. 노래 선택
         private MusicItem _selectedBgm;
         public MusicItem SelectedBgm
         {
             get => _selectedBgm;
             set
             {
-                _selectedBgm = value;
-                if (value != null) _audioService.PlayBGM(value.FileName);
-                OnPropertyChanged();
+                if (SetProperty(ref _selectedBgm, value) && value != null)
+                {
+                    _audioService.PlayBGM(value.FileName);
+                }
             }
         }
 
-        // 3. 효과음 활성화
         private bool _isSfxEnabled = true;
         public bool IsSfxEnabled
         {
             get => _isSfxEnabled;
-            set { _isSfxEnabled = value; _audioService.SetSfxMute(!value); OnPropertyChanged(); }
+            set { if (SetProperty(ref _isSfxEnabled, value)) _audioService.SetSfxMute(!value); }
         }
 
-        // 4. 볼륨 조절
         private double _bgmVolume = 50;
         public double BgmVolume
         {
             get => _bgmVolume;
-            set { _bgmVolume = value; _audioService.SetBgmVolume(value / 100); OnPropertyChanged(); }
+            set { if (SetProperty(ref _bgmVolume, value)) _audioService.SetBgmVolume(value / 100); }
         }
 
         private double _sfxVolume = 50;
         public double SfxVolume
         {
             get => _sfxVolume;
-            set { _sfxVolume = value; _audioService.SetSfxVolume(value / 100); OnPropertyChanged(); }
+            set { if (SetProperty(ref _sfxVolume, value)) _audioService.SetSfxVolume(value / 100); }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        #endregion
     }
 }
