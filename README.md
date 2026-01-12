@@ -4,6 +4,16 @@ MVVM 패턴을 준수하여 제작된 윈도우 지뢰찾기 아이디어를 기
 > LIGNex1 The SSEN 강의 중 C#와 WPF 강의를 토대로 제작했으며,<br>
 >일부 내용은 Google Gemini의 도움을 받아 생성되었습니다.
 ---
+## 👥 Members
+* KangJunBeom 
+* ckstjrl
+* cheoljun99
+* mindidii
+
+|![준범](https://avatars.githubusercontent.com/u/80073573?v=4)|![찬석](https://avatars.githubusercontent.com/u/221036337?v=4)|![철준](https://avatars.githubusercontent.com/u/56952340?v=4)|![민지](https://avatars.githubusercontent.com/u/144782994?v=4)
+|:---:|:---:|:---:|:---:|
+| **강준범** <br> [KangJunBeom](https://github.com/KangJunBeom) <br>|**박찬석** <br> [ckstjrl](https://github.com/ckstjrl) <br>|**박철준** <br> [cheoljun99](https://github.com/cheoljun99)<br>|**김민지** <br>[mindidii](https://github.com/mindidii)|
+---
 #### 📺 미리보기 (Screenshots)
 <img src="메인화면.png" width="250px" height="300px"></img>
 <img src="클리어화면.png" width="250px" height="300px"></img>
