@@ -72,16 +72,6 @@
                     <Setter Property="Content" Value=""/>
                 </MultiDataTrigger>
 
-                <!-- 깃발 -->
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding IsOpened}" Value="False"/>
-                        <Condition Binding="{Binding IsFlagged}" Value="True"/>
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="Content" Value="🚩"/>
-                    <Setter Property="Foreground" Value="Red"/>
-                </MultiDataTrigger>
-
                 <!-- 숫자 색 -->
                 <DataTrigger Binding="{Binding NeighborMineCount}" Value="1">
                     <Setter Property="Foreground" Value="Blue"/>
@@ -108,6 +98,16 @@
                     <Setter Property="Foreground" Value="Gray"/>
                 </DataTrigger>
 
+                <!-- 깃발 -->
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsOpened}" Value="False"/>
+                        <Condition Binding="{Binding IsFlagged}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Content" Value="🚩"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </MultiDataTrigger>
+                
                 <!-- 지뢰 표시 -->
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
