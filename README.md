@@ -117,3 +117,4 @@ MinesweeperProject<br>
 - **Build** : 솔루션 파일을 열고 Build (F6)를 수행합니다.
 - **Run** : F5를 눌러 게임을 실행합니다.
 - **Data** : 실행 파일 폴더 내에 savegame.json과 rankings.json이 자동 생성됩니다.
+- **릴리즈 배포** : 배포된 릴리즈 압축 파일의 실행 파일을 통해 실행할 수 있습니다.
